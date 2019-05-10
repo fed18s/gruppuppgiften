@@ -37,7 +37,7 @@ app.post('/cat', (req, res) => {
 app.get('/cats', (req, res) => {
   return res.status(200).send({
     success: true,
-    data: db.cats,
+    data: db.cats.all(),
   });
 });
 
@@ -71,6 +71,8 @@ app.get('/catSearch/:key/:value', (req, res) => {
   });
 });
 
+
+// Start server
 app.listen(PORT, () => {
   console.log(`The server is listening on port ${PORT}`);
 });
