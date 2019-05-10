@@ -30,6 +30,9 @@ går att hämta och spara hundar och Pokémon också.
 Ni kommer ganska snart upptäcka att koden blir rörig om ni har
 allt i en fil, så klura ut ett lämpligt sätt att dela upp koden.
 
+* Ni ska använda githubs system för pull requests när ni gör code reviews
+* Ni ska dela upp koden i funktioner och/eller klasser
+
 ## Tänk på  
 * Provkör innan du commitar
 * Gör pull-requests och code reviews på koden
