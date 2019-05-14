@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import Database from './lib/db';
 
+
 // Setup the server
 const PORT = 3000;
 const app = express();
