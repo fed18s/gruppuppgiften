@@ -1,6 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import Database from './lib/db';
+import Cat from './Classes/Cat';
+import Dog from './Classes/Dog';
 
 // Setup the server
 const PORT = 3000;
