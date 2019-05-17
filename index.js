@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import Database from './lib/db';
+import Data from './animalData.js';
 
 // Setup the server
 const PORT = 3000;
@@ -10,11 +11,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Setup the database
 const db = new Database();
-db.addCollection('cats', [
-  { name: 'Fluffy', color: 'White', age: 3 },
-  { name: 'Aslan', color: 'Gold', age: 11 },
-  { name: 'Kitty', color: 'Grey', age: 1 },
-]);
+db.addCollection('cats', Data.cat);
+db.addCollection('pokemons', Data.pokemon);
+db.addCollection('dogs', Data.dog);
 
 // Setup the routes
 app.post('/cat', (req, res) => {
@@ -34,26 +33,42 @@ app.post('/cat', (req, res) => {
   });
 });
 
-app.get('/cats', (req, res) => {
-  return res.status(200).send({
-    success: true,
-    data: db.cats.all(),
-  });
-});
-
-app.get('/cat/:id', (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  const cat = db.cats.find({ id });
-  if (cat) {
+// type = cat/dog/pokemon
+// app = hela applikationen
+// collection = db.cats/db.pokemons/db.dogs
+function registerGetAnimals(type, app, collection) {
+  app.get('/'+type+'s', (req, res) => {
     return res.status(200).send({
       success: true,
-      data: cat,
+      data: collection.all(),
     });
-  }
-  return res.status(404).send({
-    success: false,
-    message: 'Cat not found',
   });
+}
+
+function registerGetAnimalId(type, app, collection){
+  app.get('/'+type+'/:id', (req, res) => {
+    const id = parseInt(req.params.id, 10);
+    const animal = collection.find({ id });
+    if (animal) {
+      return res.status(200).send({
+        success: true,
+        data: animal,
+      });
+    }
+    return res.status(404).send({
+      success: false,
+      message: type.upperCaseFirst()+' not found',
+    });
+  });
+}
+
+[
+  {type: 'cat', collection: db.cats},
+  {type: 'dog', collection: db.dogs},
+  {type: 'pokemon', collection: db.pokemons},
+].forEach((animal) => {
+  registerGetAnimals(animal.type, app, animal.collection);
+  registerGetAnimalId(animal.type, app, animal.collection);
 });
 
 app.get('/catSearch/:key/:value', (req, res) => {
@@ -70,7 +85,6 @@ app.get('/catSearch/:key/:value', (req, res) => {
     message: 'Cat not found',
   });
 });
-
 
 // Start server
 app.listen(PORT, () => {
