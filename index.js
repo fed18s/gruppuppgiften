@@ -29,167 +29,170 @@ db.addCollection('pokemons', [
 ]);
 
 // Setup the routes for cats
-app.post('/cat', (req, res) => {
+
+app.post('/animal/:animalType', (req, res) => {
+  const { animalType } = req.params;
   if (!req.body.name) {
     console.log(req.body);
     return res.status(400).send({
       success: false,
-      message: 'Name is required for cat',
+      message: 'Name is required for animal',
     });
   }
-  const newCat = req.body;
-  const newId = db.cats.push(newCat);
+  const newAnimalType = req.body;
+  const newId = db[`${animalType}s`].push(newAnimalType);
   return res.status(201).send({
     success: true,
-    message: 'Cat added successfully',
+    message: `${animalType} added successfully`,
     id: newId,
   });
 });
 
-app.get('/cats', (req, res) => {
+app.get('/animal/:animalType', (req, res) => {
+  const { animalType } = req.params;
   return res.status(200).send({
     success: true,
-    data: db.cats.all(),
+    data: db[animalType].all(),
   });
 });
 
-app.get('/cat/:id', (req, res) => {
+app.get('/animal/:animalType/:id', (req, res) => {
   const id = parseInt(req.params.id, 10);
-  const cat = db.cats.find({ id });
-  if (cat) {
+  const animalType = db.animalType.find({ id });
+  if (animalType) {
     return res.status(200).send({
       success: true,
-      data: cat,
+      data: animalType,
     });
   }
   return res.status(404).send({
     success: false,
-    message: 'Cat not found',
+    message: `${animalType} animal not found`,
   });
 });
 
-app.get('/catSearch/:key/:value', (req, res) => {
+app.get('/animal/:animalType/:key/:value', (req, res) => {
   const { key, value } = req.params;
-  const cat = db.cats.find({ [key]: value });
-  if (cat) {
+  const animalType = db.animalType.find({ [key]: value });
+  if (animalType) {
     return res.status(200).send({
       success: true,
-      data: cat,
+      data: animalType,
     });
   }
   return res.status(404).send({
     success: false,
-    message: 'Cat not found',
+    message: `${animalType} animal not found`,
   });
 });
-// Setup the routes for dogs
-app.post('/dog', (req, res) => {
-  if (!req.body.name) {
-    console.log(req.body);
-    return res.status(400).send({
-      success: false,
-      message: 'Name is required for dog',
-    });
-  }
-  const newDog = req.body;
-  const newId = db.dogs.push(newDog);
-  return res.status(201).send({
-    success: true,
-    message: 'Dog added successfully',
-    id: newId,
-  });
-});
+// // Setup the routes for dogs
+// app.post('/dog', (req, res) => {
+//   if (!req.body.name) {
+//     console.log(req.body);
+//     return res.status(400).send({
+//       success: false,
+//       message: 'Name is required for dog',
+//     });
+//   }
+//   const newDog = req.body;
+//   const newId = db.dogs.push(newDog);
+//   return res.status(201).send({
+//     success: true,
+//     message: 'Dog added successfully',
+//     id: newId,
+//   });
+// });
 
-app.get('/dogs', (req, res) => {
-  return res.status(200).send({
-    success: true,
-    data: db.dogs.all(),
-  });
-});
+// app.get('/dogs', (req, res) => {
+//   return res.status(200).send({
+//     success: true,
+//     data: db.dogs.all(),
+//   });
+// });
 
-app.get('/dog/:id', (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  const dog = db.dogs.find({ id });
-  if (dog) {
-    return res.status(200).send({
-      success: true,
-      data: dog,
-    });
-  }
-  return res.status(404).send({
-    success: false,
-    message: 'Dog not found',
-  });
-});
+// app.get('/dog/:id', (req, res) => {
+//   const id = parseInt(req.params.id, 10);
+//   const dog = db.dogs.find({ id });
+//   if (dog) {
+//     return res.status(200).send({
+//       success: true,
+//       data: dog,
+//     });
+//   }
+//   return res.status(404).send({
+//     success: false,
+//     message: 'Dog not found',
+//   });
+// });
 
-app.get('/dogSearch/:key/:value', (req, res) => {
-  const { key, value } = req.params;
-  const dog = db.dogs.find({ [key]: value });
-  if (dog) {
-    return res.status(200).send({
-      success: true,
-      data: dog,
-    });
-  }
-  return res.status(404).send({
-    success: false,
-    message: 'Dog not found',
-  });
-});
-// Setup the routes for pokemons
-app.post('/pokemon', (req, res) => {
-  if (!req.body.name) {
-    console.log(req.body);
-    return res.status(400).send({
-      success: false,
-      message: 'Name is required for pokemon',
-    });
-  }
-  const newPokemon = req.body;
-  const newId = db.pokemons.push(newPokemon);
-  return res.status(201).send({
-    success: true,
-    message: 'Pokemon added successfully',
-    id: newId,
-  });
-});
+// app.get('/dogSearch/:key/:value', (req, res) => {
+//   const { key, value } = req.params;
+//   const dog = db.dogs.find({ [key]: value });
+//   if (dog) {
+//     return res.status(200).send({
+//       success: true,
+//       data: dog,
+//     });
+//   }
+//   return res.status(404).send({
+//     success: false,
+//     message: 'Dog not found',
+//   });
+// });
+// // Setup the routes for pokemons
+// app.post('/pokemon', (req, res) => {
+//   if (!req.body.name) {
+//     console.log(req.body);
+//     return res.status(400).send({
+//       success: false,
+//       message: 'Name is required for pokemon',
+//     });
+//   }
+//   const newPokemon = req.body;
+//   const newId = db.pokemons.push(newPokemon);
+//   return res.status(201).send({
+//     success: true,
+//     message: 'Pokemon added successfully',
+//     id: newId,
+//   });
+// });
 
-app.get('/pokemons', (req, res) => {
-  return res.status(200).send({
-    success: true,
-    data: db.pokemons.all(),
-  });
-});
+// app.get('/pokemons', (req, res) => {
+//   return res.status(200).send({
+//     success: true,
+//     data: db.pokemons.all(),
+//   });
+// });
 
-app.get('/pokemon/:id', (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  const pokemon = db.pokemons.find({ id });
-  if (pokemon) {
-    return res.status(200).send({
-      success: true,
-      data: pokemon,
-    });
-  }
-  return res.status(404).send({
-    success: false,
-    message: 'Pokemon not found',
-  });
-});
+// app.get('/pokemon/:id', (req, res) => {
+//   const id = parseInt(req.params.id, 10);
+//   const pokemon = db.pokemons.find({ id });
+//   if (pokemon) {
+//     return res.status(200).send({
+//       success: true,
+//       data: pokemon,
+//     });
+//   }
+//   return res.status(404).send({
+//     success: false,
+//     message: 'Pokemon not found',
+//   });
+// });
 
-app.get('/pokemonSearch/:key/:value', (req, res) => {
-  const { key, value } = req.params;
-  const pokemon = db.pokemons.find({ [key]: value });
-  if (pokemon) {
-    return res.status(200).send({
-      success: true,
-      data: pokemon,
-    });
-  }
-  return res.status(404).send({
-    success: false,
-    message: 'Pokemons not found',
-  });
-});
+// app.get('/pokemonSearch/:key/:value', (req, res) => {
+//   const { key, value } = req.params;
+//   const pokemon = db.pokemons.find({ [key]: value });
+//   if (pokemon) {
+//     return res.status(200).send({
+//       success: true,
+//       data: pokemon,
+//     });
+//   }
+//   return res.status(404).send({
+//     success: false,
+//     message: 'Pokemons not found',
+//   });
+// });
 
 
 // Start server
