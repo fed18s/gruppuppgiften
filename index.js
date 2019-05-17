@@ -48,17 +48,17 @@ app.post('/animal/:animalType', (req, res) => {
   });
 });
 
-app.get('/animal/:animalType', (req, res) => {
-  const { animalType } = req.params;
+app.get('/animal/:animalTypes', (req, res) => {
+  const { animalTypes } = req.params;
   return res.status(200).send({
     success: true,
-    data: db[animalType].all(),
+    data: db[animalTypes].all(),
   });
 });
 
 app.get('/animal/:animalType/:id', (req, res) => {
   const id = parseInt(req.params.id, 10);
-  const animalType = db.animalType.find({ id });
+  const animalType = db.animalTypes.find({ id });
   if (animalType) {
     return res.status(200).send({
       success: true,
@@ -73,7 +73,7 @@ app.get('/animal/:animalType/:id', (req, res) => {
 
 app.get('/animal/:animalType/:key/:value', (req, res) => {
   const { key, value } = req.params;
-  const animalType = db.animalType.find({ [key]: value });
+  const animalType = db.animalTypes.find({ [key]: value });
   if (animalType) {
     return res.status(200).send({
       success: true,
