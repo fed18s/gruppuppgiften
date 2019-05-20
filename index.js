@@ -11,6 +11,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Setup the database
 const db = new Database();
+console.log("raw data: ", Data.cat);
+
 db.addCollection('cats', Data.cat);
 db.addCollection('pokemons', Data.pokemon);
 db.addCollection('dogs', Data.dog);
@@ -95,7 +97,7 @@ app.post('/register', (req, res) => {
 // type = cat/dog/pokemon
 // app = hela applikationen
 // collection = db.cats/db.pokemons/db.dogs
-function registerGetAnimals(type, app, collection) {
+function getAnimals(type, app, collection) {
   app.get('/'+type+'s', (req, res) => {
     return res.status(200).send({
       success: true,
@@ -104,7 +106,7 @@ function registerGetAnimals(type, app, collection) {
   });
 }
 
-function registerGetAnimalId(type, app, collection){
+function getAnimalId(type, app, collection){
   app.get('/'+type+'/:id', (req, res) => {
     const id = parseInt(req.params.id, 10);
     const animal = collection.find({ id });
@@ -126,8 +128,12 @@ function registerGetAnimalId(type, app, collection){
   {type: 'dog', collection: db.dogs},
   {type: 'pokemon', collection: db.pokemons},
 ].forEach((animal) => {
-  registerGetAnimals(animal.type, app, animal.collection);
-  registerGetAnimalId(animal.type, app, animal.collection);
+  console.log("db: ", db.collections);
+  
+  console.log(animal.type + " : ", animal.collection);
+  
+  getAnimals(animal.type, app, animal.collection);
+  getAnimalId(animal.type, app, animal.collection);
 });
 
 app.get('/catSearch/:key/:value', (req, res) => {
