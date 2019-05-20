@@ -16,19 +16,78 @@ db.addCollection('pokemons', Data.pokemon);
 db.addCollection('dogs', Data.dog);
 
 // Setup the routes
-app.post('/cat', (req, res) => {
-  if (!req.body.name) {
+// app.post('/cat', (req, res) => {
+//   if (!req.body.name) {
+//     console.log(req.body);
+//     return res.status(400).send({
+//       success: false,
+//       message: 'Name is required for cat',
+//     });
+//   }
+//   const newCat = req.body;
+//   const newId = db.cats.push(newCat);
+//   return res.status(201).send({
+//     success: true,
+//     message: 'Cat added successfully',
+//     id: newId,
+//   });
+// });
+
+app.post('/register', (req, res) => {
+  if (!req.body.type) {
     console.log(req.body);
     return res.status(400).send({
       success: false,
-      message: 'Name is required for cat',
+      message: 'Type is required for animal',
     });
   }
-  const newCat = req.body;
-  const newId = db.cats.push(newCat);
+
+  if (!req.body.animal.name) {
+    console.log(req.body);
+    return res.status(400).send({
+      success: false,
+      message: 'Name is required for animal',
+    });
+  }
+
+  if (!req.body.animal.age) {
+    console.log(req.body);
+    return res.status(400).send({
+      success: false,
+      message: 'Age is required for animal',
+    });
+  }
+
+  if (!req.body.animal.color) {
+    console.log(req.body);
+    return res.status(400).send({
+      success: false,
+      message: 'Color is required for animal',
+    });
+  }
+
+  let newId = 0;
+
+  if(req.body.type === 'cat'){
+    newId = db.cats.push(req.body.animal);
+  }
+  if(req.body.type === 'pokemon'){
+    newId = db.pokemons.push(req.body.animal);
+  }
+  if(req.body.type === 'dog'){
+    newId = db.dogs.push(req.body.animal);
+  }
+
+  if(newId === 0){
+    return res.status(404).send({
+      success: false,
+      message: 'Oops! Something went wrong, adding animal was not successful.',
+    });
+  }
+
   return res.status(201).send({
     success: true,
-    message: 'Cat added successfully',
+    message: 'Animal added successfully.',
     id: newId,
   });
 });
