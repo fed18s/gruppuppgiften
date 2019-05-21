@@ -35,16 +35,11 @@ db.addCollection('dogs', Data.dog);
 //   });
 // });
 
-app.post('/register', (req, res) => {
-  if (!req.body.type) {
-    console.log(req.body);
-    return res.status(400).send({
-      success: false,
-      message: 'Type is required for animal',
-    });
-  }
+// Setup the routes
+app.post('/:type', (req, res) => {
+  let type = req.params.type;
 
-  if (!req.body.animal.name) {
+  if (!req.body.name) {
     console.log(req.body);
     return res.status(400).send({
       success: false,
@@ -52,7 +47,7 @@ app.post('/register', (req, res) => {
     });
   }
 
-  if (!req.body.animal.age) {
+  if (!req.body.age) {
     console.log(req.body);
     return res.status(400).send({
       success: false,
@@ -60,7 +55,7 @@ app.post('/register', (req, res) => {
     });
   }
 
-  if (!req.body.animal.color) {
+  if (!req.body.color) {
     console.log(req.body);
     return res.status(400).send({
       success: false,
@@ -70,13 +65,13 @@ app.post('/register', (req, res) => {
 
   let newId = 0;
 
-  if(req.body.type === 'cat'){
+  if(type === 'cat'){
     newId = db.cats.push(req.body.animal);
   }
-  if(req.body.type === 'pokemon'){
+  if(type === 'pokemon'){
     newId = db.pokemons.push(req.body.animal);
   }
-  if(req.body.type === 'dog'){
+  if(type === 'dog'){
     newId = db.dogs.push(req.body.animal);
   }
 
