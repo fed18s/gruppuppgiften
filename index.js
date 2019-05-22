@@ -33,12 +33,37 @@ app.post('/cat', (req, res) => {
   });
 });
 
-function registerGetAnimals(app, path, collection) {
-app.get('/path', (req, res) => {
-  return res.status(200).send({
-    success: true,
-    data: collection.all(),
+class Animals {
+	constructor(type, collection, app) {
+        this.type = type;
+        this.collection = collection;
+        this.app = app;
+  }
+	
+function registerPostCreature(type, app, collection) {
+  // Setup the routes
+  app.post('/'+type, (req, res) => {
+    if (!req.body.name) {
+      console.log(req.body);
+      return res.status(400).send({
+        success: false,
+        message: 'Name is required for ' + type,
+      });
+    }
+    const newCreature = req.body;
+    const newId = collection.push(newCreature);
+    return res.status(201).send({
+      success: true,
+      message: type + ' added successfully',
+      id: newId,
+    });
   });
+}
+[
+  {type: 'cat', collection: db.cats},
+  {type: 'dog', collection: db.dogs}
+].forEach((creature) => {
+  registerPostCreature(creature.type, app, creature.collection);
 });
 }
 
