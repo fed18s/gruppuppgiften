@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const db = new Database();
 db.addCollection('cats', mockData.cats);
 db.addCollection('dogs', mockData.dogs);
-db.addCollection('Pokemons', mockData.pokemons);
+db.addCollection('pokemons', mockData.pokemons);
 
 class Animal {
   constructor(type, collection, app) {
@@ -41,6 +41,15 @@ class Animal {
         id: newId,
       });
     });
+  }
+
+  getAllAnimals() {
+    const path = `/${this.type}s`;
+  
+    this.app.get(path, (req, res) => res.status(200).send({
+      success: true,
+      data: db[`${this.type}s`].all()
+    }));
   }
 }
 
@@ -74,6 +83,20 @@ app.get('/catSearch/:key/:value', (req, res) => {
     message: 'Cat not found',
   });
 });
+
+
+const cat = new Animals('cat', db.cats, app);
+cat.getAllAnimals();
+cat.registerAnimal();
+
+
+const dog = new Animals('dog', db.dogs, app);
+dog.getAllAnimals();
+dog.registerAnimal();
+
+const pokemon = new Animals('pokemon', db.pokemons, app);
+pokemon.getAllAnimals();
+pokemon.registerAnimal();
 
 // Start server
 app.listen(PORT, () => {
