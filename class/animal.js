@@ -17,7 +17,7 @@ export default class Animal {
   }
 
   find(key, value) {
-    return this.collection.find({ key, value });
+    return this.collection.find({ [key]: value });
   }
 
   add(animal) {

@@ -8,15 +8,15 @@ function mockCollection() {
     },
     find(params) {
       const item = { id: 0, name: 'test' };
-      const { key, value } = params;
+      const keys = Object.keys(params);
 
-      if (key === undefined || value === undefined) {
+      if (keys.length === 0) {
         throw new Error('Bad parameters to Collection.find()');
       }
-      if (item[key] === value) {
-        return item;
+      if (item[keys[0]] !== params[keys[0]]) {
+        return -1;
       }
-      return -1;
+      return item;
     },
     push() {
       return 1;
