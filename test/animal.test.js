@@ -6,8 +6,17 @@ function mockCollection() {
     all() {
       return [];
     },
-    find() {
-      return { id: 0, name: 'test' };
+    find(params) {
+      const item = { id: 0, name: 'test' };
+      const { key, value } = params;
+
+      if (key === undefined || value === undefined) {
+        throw new Error('Bad parameters to Collection.find()');
+      }
+      if (item[key] === value) {
+        return item;
+      }
+      return -1;
     },
     push() {
       return 1;
@@ -39,5 +48,13 @@ describe('testing animal class', () => {
 
   test('animal.add() return value', () => {
     expect(animal.add('test')).toBe(1);
+  });
+
+  test('animal.find() actually finding stuff', () => {
+    expect(animal.find('name', 'test')).toBeInstanceOf(Object);
+  });
+
+  test('animal.find() failing to find non-present stuff', () => {
+    expect(animal.find('name', 'test2')).toBe(-1);
   });
 });
