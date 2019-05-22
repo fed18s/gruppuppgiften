@@ -59,6 +59,33 @@ class Animals {
       });
     });
   }
+
+  getAllAnimals() {
+    const path = `/${this.type}s`;
+  
+    this.app.get(path, (req, res) => res.status(200).send({
+      success: true,
+      data: db[`${this.type}s`].all()
+    }));
+  }
+
+  getAnimalSearch() {
+    const path = `/${this.type}s/:key/:value`;
+    this.app.get(path, (req, res) => {
+      const { key, value } = req.params;
+      const animalResult = db[`${this.type}s`].find({ [key]: value });
+      if (animalResult) {
+        return res.status(200).send({
+          success: true,
+          data: animalResult,
+        });
+      }
+      return res.status(404).send({
+        success: false,
+        message: `could not find ${this.type}s`,
+      });
+    });
+  }
 }
 [
   { type: 'cat', collection: db.cats },
@@ -84,20 +111,19 @@ app.get('/cat/:id', (req, res) => {
   });
 });
 
-app.get('/catSearch/:key/:value', (req, res) => {
-  const { key, value } = req.params;
-  const cat = db.cats.find({ [key]: value });
-  if (cat) {
-    return res.status(200).send({
-      success: true,
-      data: cat,
-    });
-  }
-  return res.status(404).send({
-    success: false,
-    message: 'Cat not found',
-  });
-});
+
+const cat = new Animals('cat', db.cats, app);
+cat.getAllAnimals();
+cat.getAnimalSearch();
+
+
+const dog = new Animals('dog', db.dogs, app);
+dog.getAllAnimals();
+dog.getAnimalSearch();
+
+const pokemon = new Animals('pokemon', db.pokemons, app);
+pokemon.getAllAnimals();
+pokemon.getAnimalSearch();
 
 
 // Start server
