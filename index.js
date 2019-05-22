@@ -10,7 +10,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const animals = ['cat'];
+const animals = ['cat', 'dog', 'pokemon'];
 
 // Setup the database
 const db = new Database();
@@ -20,11 +20,13 @@ db.addCollection('cats', [
   { name: 'Kitty', color: 'Grey', age: 1 },
 ]);
 
+db.addCollection('dogs', []);
+db.addCollection('pokemons', []);
 
 for (let i = 0; i < animals.length; i + 1) {
   new Animal().getAnimals(animals[i]);
+  new Animal().postAnimal(animals[i]);
 }
-
 
 // Start server
 app.listen(PORT, () => {
