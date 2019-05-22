@@ -25,8 +25,11 @@ db.addCollection('pokemons', []);
 
 for (let i = 0; i < animals.length; i += 1) {
   new Animal(app, db).getAnimals(animals[i]);
+  new Animal(app, db).getAnimalById(animals[i]);
   new Animal(app, db).postAnimal(animals[i]);
 }
+
+// Start server
 
 // Start server
 app.listen(PORT, () => {
