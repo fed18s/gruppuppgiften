@@ -3,7 +3,6 @@ import bodyParser from 'body-parser';
 import Database from './lib/db';
 import Animal from './lib/animal';
 
-
 // Setup the server
 const PORT = 3000;
 const app = express();
@@ -19,6 +18,7 @@ db.addCollection('cats', [
   { name: 'Aslan', color: 'Gold', age: 11 },
   { name: 'Kitty', color: 'Grey', age: 1 },
 ]);
+
 
 db.addCollection('dogs', []);
 db.addCollection('pokemons', []);
