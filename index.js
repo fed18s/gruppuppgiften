@@ -51,52 +51,63 @@ class Animals {
       data: db[`${this.type}s`].all()
     }));
   }
+
+  getAnimalId() {
+    const path = `/${this.type}/:id`;
+
+    this.app.get(path, (req, res) => {
+      const id = +req.params.id;
+      const Idresult = db[`${this.type}s`].all().find(obj => obj.id === id);
+      if (Idresult) {
+        return res.status(200).send({
+          success: true,
+          data: Idresult,
+        });
+      }
+      return res.status(404).send({
+        success: false,
+        message: `${this.type} could not be found`,
+
+      });
+    });
+  }
+
+  getAnimalSearch() {
+    const path = `/${this.type}s/:key/:value`;
+    this.app.get(path, (req, res) => {
+      const { key, value } = req.params;
+      const animalResult = db[`${this.type}s`].find({ [key]: value });
+      if (animalResult) {
+        return res.status(200).send({
+          success: true,
+          data: animalResult,
+        });
+      }
+      return res.status(404).send({
+        success: false,
+        message: `could not find ${this.type}s`,
+      });
+    });
+  }
 }
-
-
-app.get('/cat/:id', (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  const cat = db.cats.find({ id });
-  if (cat) {
-    return res.status(200).send({
-      success: true,
-      data: cat,
-    });
-  }
-  return res.status(404).send({
-    success: false,
-    message: 'Cat not found',
-  });
-});
-
-app.get('/catSearch/:key/:value', (req, res) => {
-  const { key, value } = req.params;
-  const cat = db.cats.find({ [key]: value });
-  if (cat) {
-    return res.status(200).send({
-      success: true,
-      data: cat,
-    });
-  }
-  return res.status(404).send({
-    success: false,
-    message: 'Cat not found',
-  });
-});
-
 
 const cat = new Animals('cat', db.cats, app);
 cat.getAllAnimals();
 cat.registerAnimal();
-
+cat.getAnimalSearch();
+cat.getAnimalId();
 
 const dog = new Animals('dog', db.dogs, app);
 dog.getAllAnimals();
 dog.registerAnimal();
+dog.getAnimalSearch();
+dog.getAnimalId();
 
 const pokemon = new Animals('pokemon', db.pokemons, app);
 pokemon.getAllAnimals();
 pokemon.registerAnimal();
+pokemon.getAnimalSearch();
+pokemon.getAnimalId();
 
 // Start server
 app.listen(PORT, () => {
