@@ -19,9 +19,11 @@ Sök efter en katt med namnet Aslan:
 `curl localhost:3000/catSearch/name/Aslan`
 
 Lägg till en katt:
-`curl -X POST localhost:3000/cat \
+```shell
+curl -X POST localhost:3000/cat \
  -H 'Content-Type: application/json' \
- --data '{"name": "Missan", "age": 5, "color": "Brown"}'`
+ --data '{"name": "Missan", "age": 5, "color": "Brown"}'
+ ```
  
 ## Uppgiften  
 Er uppgift är att bygga ut den här applikationen, så att det
