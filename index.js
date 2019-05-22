@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const db = new Database();
 db.addCollection('cats', mockData.cats);
 db.addCollection('dogs', mockData.dogs);
-db.addCollection('Pokemons', mockData.pokemons);
+db.addCollection('pokemons', mockData.pokemons);
 
 // Setup the routes
 app.post('/cat', (req, res) => {
@@ -59,14 +59,16 @@ class Animals {
       });
     });
   }
+
+  getAllAnimals() {
+    const path = `/${this.type}s`;
+  
+    this.app.get(path, (req, res) => res.status(200).send({
+      success: true,
+      data: db[`${this.type}s`].all()
+    }));
+  }
 }
-[
-  { type: 'cat', collection: db.cats },
-  { type: 'dog', collection: db.dogs },
-  { type: 'pokemon', collection: db.pokemons }
-].forEach((creature) => {
-  registerPostCreature(creature.type, app, creature.collection);
-});
 
 
 app.get('/cat/:id', (req, res) => {
@@ -98,6 +100,17 @@ app.get('/catSearch/:key/:value', (req, res) => {
     message: 'Cat not found',
   });
 });
+
+
+const cat = new Animals('cat', db.cats, app);
+cat.getAllAnimals();
+
+
+const dog = new Animals('dog', db.dogs, app);
+dog.getAllAnimals();
+
+const pokemon = new Animals('pokemon', db.pokemons, app);
+pokemon.getAllAnimals();
 
 
 // Start server
