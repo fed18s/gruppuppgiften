@@ -69,6 +69,26 @@ class Animals {
     }));
   }
 
+  getAnimalId() {
+    const path = `/${this.type}/:id`;
+
+    this.app.get(path, (req, res) => {
+      const id = +req.params.id;
+      const Idresult = db[`${this.type}s`].all().find(obj => obj.id === id);
+      if (Idresult) {
+        return res.status(200).send({
+          success: true,
+          data: Idresult,
+        });
+      }
+      return res.status(404).send({
+        success: false,
+        message: `${this.type} could not be found`,
+
+      });
+    });
+  }
+
   getAnimalSearch() {
     const path = `/${this.type}s/:key/:value`;
     this.app.get(path, (req, res) => {
@@ -88,35 +108,21 @@ class Animals {
   }
 }
 
-
-app.get('/cat/:id', (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  const cat = db.cats.find({ id });
-  if (cat) {
-    return res.status(200).send({
-      success: true,
-      data: cat,
-    });
-  }
-  return res.status(404).send({
-    success: false,
-    message: 'Cat not found',
-  });
-});
-
-
 const cat = new Animals('cat', db.cats, app);
 cat.getAllAnimals();
 cat.getAnimalSearch();
+cat.getAnimalId();
 
 
 const dog = new Animals('dog', db.dogs, app);
 dog.getAllAnimals();
 dog.getAnimalSearch();
+dog.getAnimalId();
 
 const pokemon = new Animals('pokemon', db.pokemons, app);
 pokemon.getAllAnimals();
 pokemon.getAnimalSearch();
+pokemon.getAnimalId();
 
 
 // Start server
