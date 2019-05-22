@@ -23,9 +23,9 @@ db.addCollection('cats', [
 db.addCollection('dogs', []);
 db.addCollection('pokemons', []);
 
-for (let i = 0; i < animals.length; i + 1) {
-  new Animal().getAnimals(animals[i]);
-  new Animal().postAnimal(animals[i]);
+for (let i = 0; i < animals.length; i += 1) {
+  new Animal(app, db).getAnimals(animals[i]);
+  new Animal(app, db).postAnimal(animals[i]);
 }
 
 // Start server
