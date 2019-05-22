@@ -40,8 +40,9 @@ class Animals {
     this.app = app;
   }
 
+  // Setup the routes
+  
   registerPostCreature(type, app, collection) {
-    // Setup the routes
     app.post('/' + type, (req, res) => {
       if (!req.body.name) {
         console.log(req.body);
@@ -70,21 +71,24 @@ class Animals {
   }
 }
 
-
-app.get('/cat/:id', (req, res) => {
-  const id = parseInt(req.params.id, 10);
-  const cat = db.cats.find({ id });
-  if (cat) {
-    return res.status(200).send({
-      success: true,
-      data: cat,
+  getAnimalId() {
+    const path = '/${this.type}/:id';
+  
+    this.app.get(path, (req, res) => {
+    const id = +req.params.id;
+    const result = db['${this.type}s'].all.find(obj =>obj.id === id);
+    if (result) {
+      return res.status(200).send({
+        success: true,
+        data: result,
+      });
+    }
+    return res.status(404).send({
+      success: false,
+      message: 'Cat not found',
     });
-  }
-  return res.status(404).send({
-    success: false,
-    message: 'Cat not found',
   });
-});
+}
 
 app.get('/catSearch/:key/:value', (req, res) => {
   const { key, value } = req.params;
