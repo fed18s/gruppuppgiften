@@ -15,24 +15,6 @@ db.addCollection('cats', mockData.cats);
 db.addCollection('dogs', mockData.dogs);
 db.addCollection('pokemons', mockData.pokemons);
 
-// Setup the routes
-app.post('/cat', (req, res) => {
-  if (!req.body.name) {
-    console.log(req.body);
-    return res.status(400).send({
-      success: false,
-      message: 'Name is required for cat',
-    });
-  }
-  const newCat = req.body;
-  const newId = db.cats.push(newCat);
-  return res.status(201).send({
-    success: true,
-    message: 'Cat added successfully',
-    id: newId,
-  });
-});
-
 class Animals {
   constructor(type, collection, app) {
     this.type = type;
@@ -40,21 +22,22 @@ class Animals {
     this.app = app;
   }
 
-  registerPostCreature(type, app, collection) {
+  registerAnimal() {
     // Setup the routes
-    app.post('/' + type, (req, res) => {
+	const path = `/${this.type}`;
+    this.app.post(path, (req, res) => {
       if (!req.body.name) {
         console.log(req.body);
         return res.status(400).send({
           success: false,
-          message: 'Name is required for ' + type,
+          message: 'Name is required for ' + this.type,
         });
       }
-      const newCreature = req.body;
-      const newId = collection.push(newCreature);
+      const animal = req.body;
+      const newId = this.collection.push(animal);
       return res.status(201).send({
         success: true,
-        message: type + ' added successfully',
+        message: this.type + ' added successfully',
         id: newId,
       });
     });
@@ -110,20 +93,21 @@ class Animals {
 
 const cat = new Animals('cat', db.cats, app);
 cat.getAllAnimals();
+cat.registerAnimal();
 cat.getAnimalSearch();
 cat.getAnimalId();
 
-
 const dog = new Animals('dog', db.dogs, app);
 dog.getAllAnimals();
+dog.registerAnimal();
 dog.getAnimalSearch();
 dog.getAnimalId();
 
 const pokemon = new Animals('pokemon', db.pokemons, app);
 pokemon.getAllAnimals();
+pokemon.registerAnimal();
 pokemon.getAnimalSearch();
 pokemon.getAnimalId();
-
 
 // Start server
 app.listen(PORT, () => {
