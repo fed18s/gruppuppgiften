@@ -24,7 +24,7 @@ class Animals {
 
   registerAnimal() {
     // Setup the routes
-	const path = '/${this.type}';
+	const path = `/${this.type}`;
     this.app.post(path, (req, res) => {
       if (!req.body.name) {
         console.log(req.body);
