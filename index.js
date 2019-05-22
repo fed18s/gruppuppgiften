@@ -19,12 +19,10 @@ db.addCollection('cats', [
   { name: 'Kitty', color: 'Grey', age: 1 },
 ]);
 
-
 for(let i = 0; i < animals.length; i++){ 
   new Animal().getAnimals(app, db, animals[i]);
   new Animal().searchAnimal(app, db, animals[i]);
 }
-
 
 // Start server
 app.listen(PORT, () => {
