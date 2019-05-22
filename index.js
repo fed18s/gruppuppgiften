@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import Database from './lib/db';
+import mockData from './mockData';
 
 // Setup the server
 const PORT = 3000;
@@ -10,11 +11,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Setup the database
 const db = new Database();
-db.addCollection('cats', [
-  { name: 'Fluffy', color: 'White', age: 3 },
-  { name: 'Aslan', color: 'Gold', age: 11 },
-  { name: 'Kitty', color: 'Grey', age: 1 },
-]);
+db.addCollection('cats', mockData.cats);
+db.addCollection('dogs', mockData.dogs);
+db.addCollection('Pokemons', mockData.pokemons);
 
 // Setup the routes
 app.post('/cat', (req, res) => {
@@ -34,12 +33,14 @@ app.post('/cat', (req, res) => {
   });
 });
 
-app.get('/cats', (req, res) => {
+function registerGetAnimals(app, path, collection) {
+app.get('/path', (req, res) => {
   return res.status(200).send({
     success: true,
-    data: db.cats.all(),
+    data: collection.all(),
   });
 });
+}
 
 app.get('/cat/:id', (req, res) => {
   const id = parseInt(req.params.id, 10);
@@ -70,7 +71,6 @@ app.get('/catSearch/:key/:value', (req, res) => {
     message: 'Cat not found',
   });
 });
-
 
 // Start server
 app.listen(PORT, () => {
