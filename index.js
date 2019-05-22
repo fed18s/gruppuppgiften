@@ -3,7 +3,6 @@ import bodyParser from 'body-parser';
 import Database from './lib/db';
 import Animal from './lib/animal';
 
-
 // Setup the server
 const PORT = 3000;
 const app = express();
@@ -20,11 +19,10 @@ db.addCollection('cats', [
   { name: 'Kitty', color: 'Grey', age: 1 },
 ]);
 
-
-for (let i = 0; i < animals.length; i + 1) {
-  new Animal().getAnimals(animals[i]);
+for(let i = 0; i < animals.length; i++){ 
+  new Animal().getAnimals(app, db, animals[i]);
+  new Animal().searchAnimal(app, db, animals[i]);
 }
-
 
 // Start server
 app.listen(PORT, () => {
