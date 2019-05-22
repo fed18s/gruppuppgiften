@@ -34,38 +34,40 @@ app.post('/cat', (req, res) => {
 });
 
 class Animals {
-	constructor(type, collection, app) {
-        this.type = type;
-        this.collection = collection;
-        this.app = app;
+  constructor(type, collection, app) {
+    this.type = type;
+    this.collection = collection;
+    this.app = app;
   }
-	
-function registerPostCreature(type, app, collection) {
-  // Setup the routes
-  app.post('/'+type, (req, res) => {
-    if (!req.body.name) {
-      console.log(req.body);
-      return res.status(400).send({
-        success: false,
-        message: 'Name is required for ' + type,
+
+  registerPostCreature(type, app, collection) {
+    // Setup the routes
+    app.post('/' + type, (req, res) => {
+      if (!req.body.name) {
+        console.log(req.body);
+        return res.status(400).send({
+          success: false,
+          message: 'Name is required for ' + type,
+        });
+      }
+      const newCreature = req.body;
+      const newId = collection.push(newCreature);
+      return res.status(201).send({
+        success: true,
+        message: type + ' added successfully',
+        id: newId,
       });
-    }
-    const newCreature = req.body;
-    const newId = collection.push(newCreature);
-    return res.status(201).send({
-      success: true,
-      message: type + ' added successfully',
-      id: newId,
     });
-  });
+  }
 }
 [
-  {type: 'cat', collection: db.cats},
-  {type: 'dog', collection: db.dogs}
+  { type: 'cat', collection: db.cats },
+  { type: 'dog', collection: db.dogs },
+  { type: 'pokemon', collection: db.pokemons }
 ].forEach((creature) => {
   registerPostCreature(creature.type, app, creature.collection);
 });
-}
+
 
 app.get('/cat/:id', (req, res) => {
   const id = parseInt(req.params.id, 10);
@@ -96,6 +98,7 @@ app.get('/catSearch/:key/:value', (req, res) => {
     message: 'Cat not found',
   });
 });
+
 
 // Start server
 app.listen(PORT, () => {
