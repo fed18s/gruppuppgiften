@@ -21,8 +21,8 @@ db.addCollection('cats', [
 ]);
 
 
-for(let i = 0; i < animals.length; i++){ 
-  new Animal().getAnimals(app, db, animals[i]);
+for (let i = 0; i < animals.length; i + 1) {
+  new Animal().getAnimals(animals[i]);
 }
 
 
