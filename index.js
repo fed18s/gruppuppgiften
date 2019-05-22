@@ -2,6 +2,8 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import Database from './lib/db';
 
+import Animal from './class/animal';
+
 import animalData from './data/animalData';
 
 // Setup the server
@@ -10,11 +12,24 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Setup animal types
+const animalTypes = Object.keys(animalData);
+
 // Setup the database
 const db = new Database();
-Object.keys(animalData).forEach((animal) => {
+animalTypes.forEach((animal) => {
   db.addCollection(animal, animalData[animal]);
 });
+
+// Setup animal classes
+const animalObjects = {};
+animalTypes.forEach((animal) => {
+  const collection = db[animal];
+  const animalObject = new Animal(animal, collection);
+  animalObjects[animal] = animalObject;
+});
+
+console.log(animalObjects);
 
 // Setup the routes
 app.post('/cat', (req, res) => {
@@ -26,7 +41,7 @@ app.post('/cat', (req, res) => {
     });
   }
   const newCat = req.body;
-  const newId = db.cats.push(newCat);
+  const newId = animalObjects.cats.add(newCat);
   return res.status(201).send({
     success: true,
     message: 'Cat added successfully',
@@ -37,13 +52,13 @@ app.post('/cat', (req, res) => {
 app.get('/cats', (req, res) => {
   return res.status(200).send({
     success: true,
-    data: db.cats.all(),
+    data: animalObjects.cats.getAll(),
   });
 });
 
 app.get('/cat/:id', (req, res) => {
   const id = parseInt(req.params.id, 10);
-  const cat = db.cats.find({ id });
+  const cat = animalObjects.cats.getById(id);
   if (cat) {
     return res.status(200).send({
       success: true,
@@ -58,7 +73,7 @@ app.get('/cat/:id', (req, res) => {
 
 app.get('/catSearch/:key/:value', (req, res) => {
   const { key, value } = req.params;
-  const cat = db.cats.find({ [key]: value });
+  const cat = animalObjects.cats.find(key, value);
   if (cat) {
     return res.status(200).send({
       success: true,
