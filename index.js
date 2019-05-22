@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const db = new Database();
 db.addCollection('cats', mockData.cats);
 db.addCollection('dogs', mockData.dogs);
-db.addCollection('pokemons', mockData.pokemons);
+db.addCollection('Pokemons', mockData.pokemons);
 
 // Setup the routes
 app.post('/cat', (req, res) => {
@@ -40,9 +40,8 @@ class Animals {
     this.app = app;
   }
 
-  // Setup the routes
-  
   registerPostCreature(type, app, collection) {
+    // Setup the routes
     app.post('/' + type, (req, res) => {
       if (!req.body.name) {
         console.log(req.body);
@@ -60,35 +59,30 @@ class Animals {
       });
     });
   }
+}
+[
+  { type: 'cat', collection: db.cats },
+  { type: 'dog', collection: db.dogs },
+  { type: 'pokemon', collection: db.pokemons }
+].forEach((creature) => {
+  registerPostCreature(creature.type, app, creature.collection);
+});
 
-  getAllAnimals() {
-    const path = `/${this.type}s`;
-  
-    this.app.get(path, (req, res) => res.status(200).send({
+
+app.get('/cat/:id', (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  const cat = db.cats.find({ id });
+  if (cat) {
+    return res.status(200).send({
       success: true,
-      data: db[`${this.type}s`].all()
-    }));
-  }
-}
-
-  getAnimalId() {
-    const path = '/${this.type}/:id';
-  
-    this.app.get(path, (req, res) => {
-    const id = +req.params.id;
-    const result = db['${this.type}s'].all.find(obj =>obj.id === id);
-    if (result) {
-      return res.status(200).send({
-        success: true,
-        data: result,
-      });
-    }
-    return res.status(404).send({
-      success: false,
-      message: 'Cat not found',
+      data: cat,
     });
+  }
+  return res.status(404).send({
+    success: false,
+    message: 'Cat not found',
   });
-}
+});
 
 app.get('/catSearch/:key/:value', (req, res) => {
   const { key, value } = req.params;
@@ -104,17 +98,6 @@ app.get('/catSearch/:key/:value', (req, res) => {
     message: 'Cat not found',
   });
 });
-
-
-const cat = new Animals('cat', db.cats, app);
-cat.getAllAnimals();
-
-
-const dog = new Animals('dog', db.dogs, app);
-dog.getAllAnimals();
-
-const pokemon = new Animals('pokemon', db.pokemons, app);
-pokemon.getAllAnimals();
 
 
 // Start server
