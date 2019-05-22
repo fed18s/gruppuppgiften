@@ -15,7 +15,7 @@ db.addCollection('cats', mockData.cats);
 db.addCollection('dogs', mockData.dogs);
 db.addCollection('pokemons', mockData.pokemons);
 
-class Animal {
+class Animals {
   constructor(type, collection, app) {
     this.type = type;
     this.collection = collection;
