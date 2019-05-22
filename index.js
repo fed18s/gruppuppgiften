@@ -42,19 +42,20 @@ class Animals {
 
   registerPostCreature(type, app, collection) {
     // Setup the routes
-    app.post('/' + type, (req, res) => {
+	const route = '/${this.type}';
+    this.app.post(route, (req, res) => {
       if (!req.body.name) {
         console.log(req.body);
         return res.status(400).send({
           success: false,
-          message: 'Name is required for ' + type,
+          message: 'Name is required for ' + this.type,
         });
       }
-      const newCreature = req.body;
-      const newId = collection.push(newCreature);
+      const animal = req.body;
+      const newId = this.collection.push(animal);
       return res.status(201).send({
         success: true,
-        message: type + ' added successfully',
+        message: this.type + ' added successfully',
         id: newId,
       });
     });
