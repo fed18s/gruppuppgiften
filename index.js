@@ -9,7 +9,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const animals = ['cat'];
+const animals = ['cat', 'dog', 'pokemon'];
 
 // Setup the database
 const db = new Database();
@@ -19,9 +19,13 @@ db.addCollection('cats', [
   { name: 'Kitty', color: 'Grey', age: 1 },
 ]);
 
-for(let i = 0; i < animals.length; i++){ 
-  new Animal().getAnimals(app, db, animals[i]);
-  new Animal().searchAnimal(app, db, animals[i]);
+
+db.addCollection('dogs', []);
+db.addCollection('pokemons', []);
+
+for (let i = 0; i < animals.length; i += 1) {
+  new Animal(app, db).getAnimals(animals[i]);
+  new Animal(app, db).postAnimal(animals[i]);
 }
 
 // Start server
