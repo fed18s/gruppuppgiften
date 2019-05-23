@@ -2,10 +2,7 @@ import Animal from '../../class/animal';
 import mockCollection from '../mocks/mockCollection';
 
 describe('testing animal class', () => {
-  let animal = null;
-  beforeEach(() => {
-    animal = new Animal('test', mockCollection());
-  });
+  const animal = new Animal('test', mockCollection());
 
   test('animal of expected class', () => {
     expect(animal).toBeInstanceOf(Animal);
@@ -27,11 +24,8 @@ describe('testing animal class', () => {
     expect(animal.add('test')).toBe(1);
   });
 
-  test('animal.find() actually finding stuff', () => {
+  test('animal.find()', () => {
     expect(animal.find('name', 'test')).toBeInstanceOf(Object);
-  });
-
-  test('animal.find() failing to find non-present stuff', () => {
     expect(animal.find('name', 'test2')).toBe(-1);
   });
 });
