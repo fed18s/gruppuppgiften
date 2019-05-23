@@ -163,10 +163,27 @@ function getAnimalId(type, app, collection){
   });
 }
 
+function searchAnimal(type, collection) {
+  app.get('/' + type + 'Search/:key/:value', (req, res) => {
+    const result = collection.find({ [req.params.key]: req.params.value });
+
+    if (result) {
+    return res.status(200).send({
+      success: true,
+      data: result,
+    });
+  }
+  return res.status(404).send({
+    success: false,
+    message: type + ' not found',
+  });
+  });
+}
+
 [
-  {type: 'cat', collection: db.cats},
-  {type: 'dog', collection: db.dogs},
-  {type: 'pokemon', collection: db.pokemons},
+  {type: 'cat', collection: db.cats },
+  {type: 'dog', collection: db.dogs },
+  {type: 'pokemon', collection: db.pokemons },
 ].forEach((animal) => {
   console.log("db: ", db.collections);
   
@@ -175,22 +192,28 @@ function getAnimalId(type, app, collection){
   getAnimals(animal.type, app, animal.collection);
   getAnimalId(animal.type, app, animal.collection);
   createAnimals(animal.type, app, animal.collection);
+  searchAnimal(animal.type, animal.collection);
 });
 
-app.get('/catSearch/:key/:value', (req, res) => {
-  const { key, value } = req.params;
-  const cat = db.cats.find({ [key]: value });
-  if (cat) {
-    return res.status(200).send({
-      success: true,
-      data: cat,
-    });
-  }
-  return res.status(404).send({
-    success: false,
-    message: 'Cat not found',
-  });
-});
+// const animalArray = ["cat", "pokemon", "dog"];
+// animalArray.forEach((animal) => {
+
+//});
+
+// app.get('/catSearch/:key/:value', (req, res) => {
+//   const { key, value } = req.params;
+//   const cat = db.cats.find({ [key]: value });
+//   if (cat) {
+//     return res.status(200).send({
+//       success: true,
+//       data: cat,
+//     });
+//   }
+//   return res.status(404).send({
+//     success: false,
+//     message: 'Cat not found',
+//   });
+// });
 
 // Start server
 app.listen(PORT, () => {
