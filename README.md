@@ -22,6 +22,10 @@ Lägg till en katt:
 `curl -X POST localhost:3000/cat \
  -H 'Content-Type: application/json' \
  --data '{"name": "Missan", "age": 5, "color": "Brown"}'`
+
+ `curl -X POST localhost:3000/pokemon\
+ -H 'Content-Type: application/json' \
+ --data '{"name": "Charzard", "age": 5, "color": "Brown"}'`
  
 ## Uppgiften  
 Er uppgift är att bygga ut den här applikationen, så att det
