@@ -1,30 +1,7 @@
 import AnimalRoutes from '../../class/animalRoutes';
-
-// Define mocks
-const mockAnimal = (type) => {
-  const item = { id: 0, name: 'test' };
-  const animal = {};
-  animal.getType = jest.fn().mockReturnValue(type);
-  animal.getAll = jest.fn().mockReturnValue([item]);
-  animal.getById = jest.fn().mockReturnValue(item);
-  animal.find = jest.fn().mockReturnValue(item);
-  animal.add = jest.fn().mockReturnValue(1);
-  return animal;
-};
-
-const mockResponse = () => {
-  const res = {};
-  res.status = jest.fn().mockReturnValue(res);
-  res.send = jest.fn().mockReturnValue(res);
-  return res;
-};
-
-const mockApp = () => {
-  const app = {};
-  app.get = jest.fn();
-  app.post = jest.fn();
-  return app;
-};
+import mockApp from '../mocks/mockApp';
+import mockResponse from '../mocks/mockResponse';
+import mockAnimal from '../mocks/mockAnimal';
 
 // Actual test suite
 describe('testing animal routing class', () => {
