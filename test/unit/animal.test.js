@@ -1,4 +1,4 @@
-import Animal from '../class/animal';
+import Animal from '../../class/animal';
 
 // Define mocks
 function mockCollection() {

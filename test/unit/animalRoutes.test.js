@@ -1,8 +1,8 @@
-import AnimalRoutes from '../class/animalRoutes';
+import AnimalRoutes from '../../class/animalRoutes';
 
 // Define mocks
 const mockAnimal = (type) => {
-  const item = { id: 0, name: 'test'};
+  const item = { id: 0, name: 'test' };
   const animal = {};
   animal.getType = jest.fn().mockReturnValue(type);
   animal.getAll = jest.fn().mockReturnValue([item]);
