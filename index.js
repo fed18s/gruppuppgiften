@@ -57,11 +57,11 @@ class Animals {
 
     this.app.get(path, (req, res) => {
       const id = +req.params.id;
-      const Idresult = db[`${this.type}s`].all().find(obj => obj.id === id);
-      if (Idresult) {
+      const idResult = db[`${this.type}s`].all().find(obj => obj.id === id);
+      if (idResult) {
         return res.status(200).send({
           success: true,
-          data: Idresult,
+          data: idResult,
         });
       }
       return res.status(404).send({
