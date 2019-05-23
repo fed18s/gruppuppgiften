@@ -1,5 +1,3 @@
-import IAnimal from './interfaces/IAnimal';
-
 const animals = {
 
     "cat": [
