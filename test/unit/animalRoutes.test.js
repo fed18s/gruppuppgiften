@@ -15,11 +15,13 @@ describe('testing animal routing class', () => {
   test('route to register get route', () => {
     animalRoutes.registerGetAll();
     expect(app.get).toHaveBeenCalledTimes(1);
+    expect(app.get.mock.calls[0][0]).toBe('/tests');
   });
 
   test('route to register post route', () => {
     animalRoutes.registerPostAnimal();
     expect(app.post).toHaveBeenCalledTimes(1);
+    expect(app.post.mock.calls[0][0]).toBe('/test');
   });
 
   test('route animals', () => {
