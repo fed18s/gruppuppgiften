@@ -22,22 +22,23 @@ class Animals {
     this.app = app;
   }
 
+  // Setup the routes in class
   registerAnimal() {
-    // Setup the routes
-	const path = `/${this.type}`;
+    const path = `/${this.type}`;
+    
     this.app.post(path, (req, res) => {
       if (!req.body.name) {
         console.log(req.body);
         return res.status(400).send({
           success: false,
-          message: 'Name is required for ' + this.type,
+          message: 'Name is required for ' + `/${this.type}`,
         });
       }
       const animal = req.body;
       const newId = this.collection.push(animal);
       return res.status(201).send({
         success: true,
-        message: this.type + ' added successfully',
+        message: `/${this.type}` + ' added successfully',
         id: newId,
       });
     });
@@ -74,6 +75,7 @@ class Animals {
 
   getAnimalSearch() {
     const path = `/${this.type}s/:key/:value`;
+
     this.app.get(path, (req, res) => {
       const { key, value } = req.params;
       const animalResult = db[`${this.type}s`].find({ [key]: value });
