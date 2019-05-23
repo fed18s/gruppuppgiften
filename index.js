@@ -74,7 +74,7 @@ class Animals {
   }
 
   getAnimalSearch() {
-    const path = `/${this.type}s/:key/:value`;
+    const path = `/${this.type}Search/:key/:value`;
 
     this.app.get(path, (req, res) => {
       const { key, value } = req.params;
