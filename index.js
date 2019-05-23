@@ -17,6 +17,51 @@ db.addCollection('cats', Data.cat);
 db.addCollection('pokemons', Data.pokemon);
 db.addCollection('dogs', Data.dog);
 
+function createAnimals(type, app, collection) {
+ app.post('/'+type, (req, res) => {
+
+  //  let newId = db[type].push(req.body.animal);
+  let newId = collection.push(newId);
+
+    if (!req.body.name) {
+    console.log(req.body);
+    return res.status(400).send({
+      success: false,
+      message: 'Name is required for ' + type,
+    });
+  }
+
+  if (!req.body.age) {
+    console.log(req.body);
+    return res.status(400).send({
+      success: false,
+      message: 'Age is required for ' + type,
+    });
+  }
+
+  if (!req.body.color) {
+    console.log(req.body);
+    return res.status(400).send({
+      success: false,
+      message: 'Color is required for ' + type,
+    });
+  }
+
+   if(newId === 0){
+     return res.status(404).send({
+       success: false,
+       message: 'Oops! Something went wrong, adding ' + type + ' was not successful.',
+     });
+   }
+
+   return res.status(201).send({
+     success: true,
+     message: type + ' added successfully.',
+     id: newId,
+   });
+ });
+}
+
 // Setup the routes
 // app.post('/cat', (req, res) => {
 //   if (!req.body.name) {
@@ -36,58 +81,58 @@ db.addCollection('dogs', Data.dog);
 // });
 
 // Setup the routes
-app.post('/:type', (req, res) => {
-  let type = req.params.type;
+// app.post('/:type', (req, res) => {
+//   let type = req.params.type;
 
-  if (!req.body.name) {
-    console.log(req.body);
-    return res.status(400).send({
-      success: false,
-      message: 'Name is required for animal',
-    });
-  }
+//   if (!req.body.name) {
+//     console.log(req.body);
+//     return res.status(400).send({
+//       success: false,
+//       message: 'Name is required for animal',
+//     });
+//   }
 
-  if (!req.body.age) {
-    console.log(req.body);
-    return res.status(400).send({
-      success: false,
-      message: 'Age is required for animal',
-    });
-  }
+//   if (!req.body.age) {
+//     console.log(req.body);
+//     return res.status(400).send({
+//       success: false,
+//       message: 'Age is required for animal',
+//     });
+//   }
 
-  if (!req.body.color) {
-    console.log(req.body);
-    return res.status(400).send({
-      success: false,
-      message: 'Color is required for animal',
-    });
-  }
+//   if (!req.body.color) {
+//     console.log(req.body);
+//     return res.status(400).send({
+//       success: false,
+//       message: 'Color is required for animal',
+//     });
+//   }
 
-  let newId = 0;
+//   let newId = 0;
 
-  if(type === 'cat'){
-    newId = db.cats.push(req.body.animal);
-  }
-  if(type === 'pokemon'){
-    newId = db.pokemons.push(req.body.animal);
-  }
-  if(type === 'dog'){
-    newId = db.dogs.push(req.body.animal);
-  }
+//   if(type === 'cat'){
+//     newId = db.cats.push(req.body.animal);
+//   }
+//   if(type === 'pokemon'){
+//     newId = db.pokemons.push(req.body.animal);
+//   }
+//   if(type === 'dog'){
+//     newId = db.dogs.push(req.body.animal);
+//   }
 
-  if(newId === 0){
-    return res.status(404).send({
-      success: false,
-      message: 'Oops! Something went wrong, adding animal was not successful.',
-    });
-  }
+//   if(newId === 0){
+//     return res.status(404).send({
+//       success: false,
+//       message: 'Oops! Something went wrong, adding animal was not successful.',
+//     });
+//   }
 
-  return res.status(201).send({
-    success: true,
-    message: 'Animal added successfully.',
-    id: newId,
-  });
-});
+//   return res.status(201).send({
+//     success: true,
+//     message: 'Animal added successfully.',
+//     id: newId,
+//   });
+// });
 
 // type = cat/dog/pokemon
 // app = hela applikationen
@@ -113,7 +158,7 @@ function getAnimalId(type, app, collection){
     }
     return res.status(404).send({
       success: false,
-      message: type.upperCaseFirst()+' not found',
+      message: type + ' not found',
     });
   });
 }
@@ -129,6 +174,7 @@ function getAnimalId(type, app, collection){
   
   getAnimals(animal.type, app, animal.collection);
   getAnimalId(animal.type, app, animal.collection);
+  createAnimals(animal.type, app, animal.collection);
 });
 
 app.get('/catSearch/:key/:value', (req, res) => {
