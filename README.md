@@ -23,7 +23,7 @@ Lägg till en katt:
  -H 'Content-Type: application/json' \
  --data '{"name": "Missan", "age": 5, "color": "Brown"}'`
 
- `curl -X POST localhost:3000/pokemon\
+ `curl -X POST localhost:3000/pokemon \
  -H 'Content-Type: application/json' \
  --data '{"name": "Charzard", "age": 5, "color": "Brown"}'`
  
@@ -44,3 +44,5 @@ allt i en fil, så klura ut ett lämpligt sätt att dela upp koden.
 
 ## Upp till er
 Jag har lagt in en linter, men för övrigt inte bestämt kodstandard...
+
+melker.hedengren@medieinstitutet.se eunju.huss@medieinstitutet.se linda.storgard@medieinstitutet.se tomasz.szczygiel.@medieinstitutet.se

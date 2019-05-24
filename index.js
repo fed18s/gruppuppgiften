@@ -43,11 +43,11 @@ animals.forEach((animal) => {
 });
 
 animals.forEach((animal) => {
-  registerGetAnimalFindId(app, animal.type + 's/:id', animal.collection);
+  registerGetAnimalFindId(app, animal.type + '/:id', animal.collection);
 });
 
 animals.forEach((animal) => {
-  registerGetAnimalSearch(app, animal.type + 's/:key/:value' , animal.collection);
+  registerGetAnimalSearch(app, animal.type + 'Search/:key/:value', animal.collection);
 });
 
   // app.post('/pokemon', (req, res) => {
@@ -94,8 +94,8 @@ function createAnimal(app, type, collection) {
 //   });
 // });()
 
-function registerGetAnimals(app, path, collection) {
-  app.get(path, (req, res) => {
+function registerGetAnimals(app, type, collection) {
+  app.get(type, (req, res) => {
     return res.status(200).send({
       success: true,
       data: collection.all(),
@@ -119,7 +119,7 @@ function registerGetAnimals(app, path, collection) {
 // });
 
 function registerGetAnimalFindId(app, type, collection) {
-  app.get(type + 's/:id', (req, res) => {
+  app.get(type + '/:id', (req, res) => {
     const id = parseInt(req.params.id, 10);
     const type = collection.find({ id });
     if (type) {
@@ -151,7 +151,7 @@ function registerGetAnimalFindId(app, type, collection) {
 // });
 
 function registerGetAnimalSearch(app, type, collection) {
-  app.get(type + 's/:key/:value', (req, res) => {
+  app.get(type + 'Search/:key/:value', (req, res) => {
     const { key, value } = req.params;
       const type = collection.find({ [key]: value });
       if (type) {
