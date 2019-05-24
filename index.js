@@ -2,13 +2,13 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import Database from './lib/db';
 
-// Setup the server
+
 const PORT = 3000;
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Setup the database
+
 const db = new Database();
 db.addCollection('cats', [
   { name: 'Fluffy', color: 'White', age: 3 },
@@ -50,26 +50,7 @@ animals.forEach((animal) => {
   registerGetAnimalSearch(app, '/' + animal.type + 'Search/:key/:value', animal.collection);
 });
 
-  // app.post('/pokemon', (req, res) => {
-  //   if (!req.body.name) {
-  //     console.log(req.body);
-  //     return res.status(400).send({
-  //       success: false,
-  //       message: 'Name is required for pokemon',
-  //     });
-  //   }
-  //   const newPokemon = req.body;
-  //   const newId = db.pokemons.push(newPokemon);
-  //   return res.status(201).send({
-  //     success: true,
-  //     message: 'Pokemon added successfully',
-  //     id: newId,
-  //   });
-  // });
 
-
-
-// OK!!!!
 function createAnimal(app, type, collection) {
   app.post(type, (req, res) => {
       if (!req.body.name) {
@@ -89,15 +70,7 @@ function createAnimal(app, type, collection) {
   });
 }
 
-// Cats
-// app.get('/cats', (req, res) => {
-//   return res.status(200).send({
-//     success: true,
-//     data: db.cats.all(),
-//   });
-// });()
 
-// OK!!!
 function registerGetAnimals(app, type, collection) {
   app.get(type, (req, res) => {
     return res.status(200).send({
@@ -107,23 +80,7 @@ function registerGetAnimals(app, type, collection) {
   });
 }
 
-// app.get('/cat/:id', (req, res) => {
-//   const id = parseInt(req.params.id, 10);
-//   const cat = db.cats.find({ id });
-//   if (cat) {
-//     return res.status(200).send({
-//       success: true,
-//       data: cat,
-//     });
-//   }
-//   return res.status(404).send({
-//     success: false,
-//     message: 'Cat not found',
-//   });
-// });
 
-
-// OK!!!!
 function registerGetAnimalFindId(app, type, collection) {
   app.get(type, (req, res) => {
     const id = parseInt(req.params.id, 10);
@@ -141,24 +98,7 @@ function registerGetAnimalFindId(app, type, collection) {
   });
 }
 
-// app.get('/catSearch/:key/:value', (req, res) => {
-//   const { key, value } = req.params;
-//   const cat = db.cats.find({ [key]: value });
-//   if (cat) {
-//     return res.status(200).send({
-//       success: true,
-//       data: cat,
-//     });
-//   }
-//   return res.status(404).send({
-//     success: false,
-//     message: 'Cat not found',
-//   });
-// });
 
-
-
-// OK!!!
 function registerGetAnimalSearch(app, type, collection) {
   app.get(type, (req, res) => {
     const { key, value } = req.params;
@@ -176,7 +116,7 @@ function registerGetAnimalSearch(app, type, collection) {
   });
 }
 
-// Start server
+
 app.listen(PORT, () => {
   console.log(`The server is listening on port ${PORT}`);
 });
