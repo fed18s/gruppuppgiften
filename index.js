@@ -30,22 +30,6 @@ function createAnimal(type, collection) {
       });
     }
 
-    if (!req.body.age) {
-      console.log(req.body);
-      return res.status(400).send({
-        success: false,
-        message: `Age is required for ${type}`,
-      });
-    }
-
-    if (!req.body.color) {
-      console.log(req.body);
-      return res.status(400).send({
-        success: false,
-        message: `Color is required for ${type}`,
-      });
-    }
-
     if (newId === 0) {
       return res.status(404).send({
         success: false,
