@@ -14,9 +14,12 @@ Hämta alla katter:
 
 Hämta katt nummer 0:
 `curl localhost:3000/cat/0`
+`curl localhost:3000/dog/2`
+
 
 Sök efter en katt med namnet Aslan:
 `curl localhost:3000/catSearch/name/Aslan`
+`curl localhost:3000/catSearch/name/Missan`
 
 Lägg till en katt:
 `curl -X POST localhost:3000/cat \
